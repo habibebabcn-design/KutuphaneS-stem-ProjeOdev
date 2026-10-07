@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="KutuphaneDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Kategoriler">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KategoriAd" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Kitaplar" Relationship="Self.FK__Kitaplar__Katego__5535A963" FromRole="Kategoriler" ToRole="Kitaplar" />
+  </EntityType>
+  <EntityType Name="Kitaplar">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BarkodNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KitapAd" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Yazar" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="SayfaSayisi" Type="Int32" />
+    <Property Name="YayinYili" Type="Int32" />
+    <Property Name="KategoriId" Type="Int32" />
+    <Property Name="KapakFotografi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Kategoriler" Relationship="Self.FK__Kitaplar__Katego__5535A963" FromRole="Kitaplar" ToRole="Kategoriler" />
+    <NavigationProperty Name="OduncIslemleri" Relationship="Self.FK__OduncIsle__Kitap__59063A47" FromRole="Kitaplar" ToRole="OduncIslemleri" />
+    <Property Name="ToplamStok" Type="Int32" Nullable="false" />
+    <Property Name="MevcutStok" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Kullanicilar">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KullaniciAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RolId" Type="Int32" />
+    <NavigationProperty Name="Roller" Relationship="Self.FK__Kullanici__RolId__4E88ABD4" FromRole="Kullanicilar" ToRole="Roller" />
+  </EntityType>
+  <EntityType Name="OduncIslemleri">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UyeId" Type="Int32" />
+    <Property Name="KitapId" Type="Int32" />
+    <Property Name="VerilisTarihi" Type="DateTime" Precision="3" />
+    <Property Name="TeslimTarihi" Type="DateTime" Precision="3" />
+    <Property Name="KondisyonDurumu" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Kitaplar" Relationship="Self.FK__OduncIsle__Kitap__59063A47" FromRole="OduncIslemleri" ToRole="Kitaplar" />
+    <NavigationProperty Name="Uyeler" Relationship="Self.FK__OduncIsle__UyeId__5812160E" FromRole="OduncIslemleri" ToRole="Uyeler" />
+  </EntityType>
+  <EntityType Name="Roller">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RolAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Kullanicilar" Relationship="Self.FK__Kullanici__RolId__4E88ABD4" FromRole="Roller" ToRole="Kullanicilar" />
+  </EntityType>
+  <EntityType Name="Uyeler">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TcNo" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Telefon" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="KayitTarihi" Type="DateTime" Precision="3" />
+    <Property Name="AktifMi" Type="Boolean" />
+    <NavigationProperty Name="OduncIslemleri" Relationship="Self.FK__OduncIsle__UyeId__5812160E" FromRole="Uyeler" ToRole="OduncIslemleri" />
+    <Property Name="ProfilFoto" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK__Kitaplar__Katego__5535A963">
+    <End Role="Kategoriler" Type="Self.Kategoriler" Multiplicity="0..1" />
+    <End Role="Kitaplar" Type="Self.Kitaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategoriler">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Kitaplar">
+        <PropertyRef Name="KategoriId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OduncIsle__Kitap__59063A47">
+    <End Role="Kitaplar" Type="Self.Kitaplar" Multiplicity="0..1" />
+    <End Role="OduncIslemleri" Type="Self.OduncIslemleri" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kitaplar">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OduncIslemleri">
+        <PropertyRef Name="KitapId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Kullanici__RolId__4E88ABD4">
+    <End Role="Roller" Type="Self.Roller" Multiplicity="0..1" />
+    <End Role="Kullanicilar" Type="Self.Kullanicilar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roller">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Kullanicilar">
+        <PropertyRef Name="RolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OduncIsle__UyeId__5812160E">
+    <End Role="Uyeler" Type="Self.Uyeler" Multiplicity="0..1" />
+    <End Role="OduncIslemleri" Type="Self.OduncIslemleri" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uyeler">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OduncIslemleri">
+        <PropertyRef Name="UyeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="KutuphaneDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Kategoriler" EntityType="Self.Kategoriler" />
+    <EntitySet Name="Kitaplar" EntityType="Self.Kitaplar" />
+    <EntitySet Name="Kullanicilar" EntityType="Self.Kullanicilar" />
+    <EntitySet Name="OduncIslemleri" EntityType="Self.OduncIslemleri" />
+    <EntitySet Name="Roller" EntityType="Self.Roller" />
+    <EntitySet Name="Uyeler" EntityType="Self.Uyeler" />
+    <AssociationSet Name="FK__Kitaplar__Katego__5535A963" Association="Self.FK__Kitaplar__Katego__5535A963">
+      <End Role="Kategoriler" EntitySet="Kategoriler" />
+      <End Role="Kitaplar" EntitySet="Kitaplar" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OduncIsle__Kitap__59063A47" Association="Self.FK__OduncIsle__Kitap__59063A47">
+      <End Role="Kitaplar" EntitySet="Kitaplar" />
+      <End Role="OduncIslemleri" EntitySet="OduncIslemleri" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Kullanici__RolId__4E88ABD4" Association="Self.FK__Kullanici__RolId__4E88ABD4">
+      <End Role="Roller" EntitySet="Roller" />
+      <End Role="Kullanicilar" EntitySet="Kullanicilar" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OduncIsle__UyeId__5812160E" Association="Self.FK__OduncIsle__UyeId__5812160E">
+      <End Role="Uyeler" EntitySet="Uyeler" />
+      <End Role="OduncIslemleri" EntitySet="OduncIslemleri" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
